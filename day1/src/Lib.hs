@@ -23,10 +23,10 @@ occurrences x xs = length (filter (== x) xs)
 -- The input processing part which isn't very interesting
 asIntLists :: [[String]] -> ([Int], [Int])
 asIntLists pairs = foldl (\acc pair -> 
-    let first    = fst acc
-        second   = snd acc
-        firstLoc = read (pair !! 0) :: Int
-        secondLoc= read (pair !! 1) :: Int
+    let first     = fst acc
+        second    = snd acc
+        firstLoc  = read (pair !! 0) :: Int
+        secondLoc = read (pair !! 1) :: Int
     in  (firstLoc : first, secondLoc : second)) ([], []) pairs
 
 processInput :: String -> [(Int, Int)]
