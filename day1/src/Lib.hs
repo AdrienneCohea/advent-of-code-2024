@@ -15,34 +15,31 @@ distance pair = abs (fst pair - snd pair)
 
 -- Part 2
 similarity :: [Int] -> [Int] -> Int
-similarity a b = foldl (\acc c -> acc + c * (occurrences c b)) 0 a
+similarity as bs = foldl (\acc a -> acc + a * (occurrences a bs)) 0 as
 
 occurrences :: Int -> [Int] -> Int
 occurrences x xs = length (filter (== x) xs)
 
 -- The input processing part which isn't very interesting
 asIntLists :: [[String]] -> ([Int], [Int])
-asIntLists pairs = foldl getPairs ([], []) pairs
-
-getPairs :: ([Int], [Int]) -> [String] -> ([Int], [Int])
-getPairs accum pair = 
-    let firstList   = fst accum
-        secondList  = snd accum
-        firstLocId  = read (pair !! 0) :: Int
-        secondLocId = read (pair !! 1) :: Int
-    in  (firstLocId : firstList, secondLocId : secondList)
+asIntLists pairs = foldl (\acc pair -> 
+    let first    = fst acc
+        second   = snd acc
+        firstLoc = read (pair !! 0) :: Int
+        secondLoc= read (pair !! 1) :: Int
+    in  (firstLoc : first, secondLoc : second)) ([], []) pairs
 
 processInput :: String -> [(Int, Int)]
 processInput contents =
     let pairs = map words (lines contents)
-        (firstList, secondList) = asIntLists pairs
-    in zip (sort firstList) (sort secondList)
+        (first, second) = asIntLists pairs
+    in zip (sort first) (sort second)
 
 -- The IO part
 someFunc :: IO ()
 someFunc = do
     contents <- readFile "input1.txt"
-    let sortedLists = processInput contents
+    let sortedLists     = processInput contents
         (first, second) = unzip sortedLists
     putStrLn "Distance:"
     print (distanceSum sortedLists)
